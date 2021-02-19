@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
+  <!-- proprietary concepts -->
   <PropertyGroup>
-    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
-    <SrcRoot>$(MSBuildThisFileDirectory)src\</SrcRoot>
-    <OutRoot>$(MSBuildThisFileDirectory)out\</OutRoot>
+    <!-- drop the trailing slash -->
+    <RepoRoot>$(MSBuildThisFileDirectory.TrimEnd('\').TrimEnd('/'))</RepoRoot>
+    <SrcRoot>$(RepoRoot)\src</SrcRoot>
+    <OutRoot>$(RepoRoot)\out</OutRoot>
+    <PublishRoot>$(RepoRoot)\out</PublishRoot>
 
     <UseGitVersioning>false</UseGitVersioning>
     <UseGitVersioning Condition="'$(MSBuildProjectExtension)' == '.csproj'">true</UseGitVersioning>
