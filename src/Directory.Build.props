@@ -22,6 +22,7 @@
     <Configuration Condition="'$(BuildKind)' != 'Local'">Release</Configuration>
     <TargetFramework>net5.0</TargetFramework>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Nullable>enable</Nullable>
 
     <!--
       would have preferred to use AssemblyName instead of MSBuildProject name. these didn't work:
