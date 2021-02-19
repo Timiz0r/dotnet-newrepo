@@ -8,10 +8,40 @@
     <OutRoot>$(RepoRoot)\out</OutRoot>
     <PublishRoot>$(RepoRoot)\out</PublishRoot>
 
+    <!--
+      meant to be overriden via command-line, such as in azure pipelines.
+      PullRequest and Official are two others
+    -->
+    <BuildKind>Local</BuildKind>
+  </PropertyGroup>
+
+  <!-- build-related stuff -->
+  <PropertyGroup>
+    <!-- these can certainly be overriden at command-line, particularly for multi-targeting of these -->
+    <Configuration>Debug</Configuration>
+    <Configuration Condition="'$(BuildKind)' != 'Local'">Release</Configuration>
+    <TargetFramework>net5.0</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+
+    <!--
+      would have preferred to use AssemblyName instead of MSBuildProject name. these didn't work:
+      * $(AssemblyName), because it gets set in Microsoft.Common.CurrentVersion.targets
+      * Doing this in Directory.Build.targets, because Microsoft.Common.CurrentVersion.targets is loaded before
+        Directory.Build.targets
+      * Using OutDir, because stuff doesn't get copied right
+
+      since it, at the time of writing, literally does this, there should be no problem:
+      <AssemblyName Condition=" '$(AssemblyName)'=='' ">$(MSBuildProjectName)</AssemblyName>
+    -->
+    <OutputPath>$(OutRoot)\$(Configuration)\$(RuntimeIdentifier)\$(TargetFramework)\$(MSBuildProjectName)</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <UseGitVersioning>false</UseGitVersioning>
     <UseGitVersioning Condition="'$(MSBuildProjectExtension)' == '.csproj'">true</UseGitVersioning>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference
       Condition="'$(UseGitVersioning)' == 'true'"
