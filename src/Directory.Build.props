@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+    <SrcRoot>$(MSBuildThisFileDirectory)src\</SrcRoot>
+    <OutRoot>$(MSBuildThisFileDirectory)out\</OutRoot>
+
+    <UseGitVersioning>false</UseGitVersioning>
+    <UseGitVersioning Condition="'$(MSBuildProjectExtension)' == '.csproj'">true</UseGitVersioning>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference
+      Condition="'$(UseGitVersioning)' == 'true'"
+      Include="Nerdbank.GitVersioning" Version="3.3.37"
+      PrivateAssets="all" />
+  </ItemGroup>
+</Project>

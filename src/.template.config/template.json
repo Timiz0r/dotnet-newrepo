@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "identity": "Timiz0r.NewRepo",
+  "name": "dotnet repo",
+  "shortName": "dotnetrepo",
+  "author": "Timiz0r",
+  "classifications": [ "Repo" ],
+  "tags": {
+    "language": "c#",
+    "type": "project"
+  }
+}
