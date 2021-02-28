@@ -22,6 +22,8 @@
     <Configuration Condition="'$(BuildKind)' != 'Local'">Release</Configuration>
     <TargetFramework>net5.0</TargetFramework>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <CLSCompliant>true</CLSCompliant>
+
     <Nullable>enable</Nullable>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
