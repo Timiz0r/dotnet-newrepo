@@ -23,6 +23,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <Nullable>enable</Nullable>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
 
     <!--
       would have preferred to use AssemblyName instead of MSBuildProject name. these didn't work:
