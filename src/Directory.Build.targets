@@ -1,31 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <Target
-    Name="GenerateCLSCompliantAttribute"
-    Condition="'$(CLSCompliant)' == 'true' or '$(CLSCompliant)' == 'false'"
-    BeforeTargets="CoreCompile">
+  <Import Project="$(RepoRoot)\build\CLSCompliantAttributeGeneration.targets" />
+  <Import Project="$(RepoRoot)\build\RequireXmlDeclarationInProject.targets" />
+  <!--
+    we check for BuildingInsideVisualStudio here because of omnisharp for instance. it has problems because:
+    * it may not exist (and won't get built by omnisharp of course)
+    * can't find dependent .net assemblies
 
-    <PropertyGroup>
-      <_CLSCompliantValue>$(CLSCompliant.ToLower())</_CLSCompliantValue>
-      <_CLSCompliantFile>$(IntermediateOutputPath)\CLSCompliantAttribute.Generated.cs</_CLSCompliantFile>
-    </PropertyGroup>
-
-    <ReadLinesFromFile File="$(_CLSCompliantFile)" >
-      <Output TaskParameter="Lines" ItemName="_CLSCompliantFileContentItem"/>
-    </ReadLinesFromFile>
-
-    <PropertyGroup>
-      <_CLSCompliantFileContents>@(_CLSCompliantFileContentItem)</_CLSCompliantFileContents>
-      <_CLSCompliantFileUpToDate>$(_CLSCompliantFileContents.Contains($(_CLSCompliantValue)))</_CLSCompliantFileUpToDate>
-    </PropertyGroup>
-
-    <WriteLinesToFile
-      Condition="'$(_CLSCompliantFileUpToDate)' == 'false'"
-      Overwrite="true"
-      Lines="[assembly: System.CLSCompliant($(_CLSCompliantValue))]"
-      File="$(_CLSCompliantFile)" />
-    <ItemGroup>
-      <Compile Include="$(_CLSCompliantFile)" />
-    </ItemGroup>
-  </Target>
+    for VS, this should also be fine. VS should keep track of the warnings just fine. so does omnisharp, for that
+    matter; however, command-line builds are still needed, unlike VS.
+  -->
+  <Import
+    Condition="'$(DisableIncrementalBuildIfWarnings)' == 'true' and '$(IsBuildTasksProject)' == 'false' and '$(BuildingInsideVisualStudio)' != 'true'"
+    Project="$(RepoRoot)\build\DisableIncrementalBuildIfWarnings.targets" />
 </Project>
