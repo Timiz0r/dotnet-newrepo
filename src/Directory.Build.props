@@ -52,6 +52,7 @@
 
     <IsBuildTasksProject>false</IsBuildTasksProject>
     <IsBuildTasksProject Condition="'$(MSBuildProjectFullPath)' == '$(RepoRoot)\build\Tasks\BuildTasks.csproj'">true</IsBuildTasksProject>
+    <IsBuildTasksProject Condition="'$(MSBuildProjectFullPath)' == '$(RepoRoot)\build\EnsureBuildTasksAreBuilt.proj'">true</IsBuildTasksProject>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -67,16 +68,17 @@
 
   <ItemGroup>
     <!--
-      two other options:
-      1. nuget package. is actually best overall, but dont feel like maintaining.
-      2. msbuild task. this is kinda less optimal for builds called on dirs/root.proj, since each actual csproj
-         will try to build this project, versus once thanks to how projectreferences work.
+      yes, a nuget package is actually best overall, but dont feel like maintaining.
 
-      the only real downside I can think of is that this project shows up in the logs. maybe that and the extra
-      build artifact that's not meant for the actual product.
+      the difficulty is if the framework version of projects are less than netcoreapp3.0, since we use System.Text.Json.
+      this is why there's a hard-coded version for the actual BuildTasks project.
+
+      furthermore, since we use a project reference, we can't build the BuildTasks project if the other projects
+      target incompatible frameworks. we simply place an msbuild call in between the generally incremental build
+      and the build call for BuildTasks.
     -->
     <ProjectReference
-      Include="$(RepoRoot)\build\Tasks\BuildTasks.csproj"
+      Include="$(RepoRoot)\build\EnsureBuildTasksAreBuilt.proj"
       Condition="'$(IsBuildTasksProject)' == 'false'"
       ReferenceOutputAssembly="false" />
   </ItemGroup>

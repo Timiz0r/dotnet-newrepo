@@ -1,4 +1,4 @@
-﻿namespace CheckForWarningsTask
+namespace BuildTasks
 {
     using System;
     using System.Linq;
